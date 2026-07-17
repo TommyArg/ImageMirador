@@ -13,4 +13,4 @@
   - Cambiado filechooser -> directoryChooser. Posible expansión a futuro para "ver" subcarpetas, más allá del registro superficial que tiene ahora.
   - Añadidos mensajes de consola mostrando el índice de la imágen (dentro de la carpeta seleccionada).
   - Añadido una transformación a lower case todos los archivos dentro de la carpeta seleccionada porque dog.jpg ≠ Dog.JPG.
-  - Añadido un poquito de error handling.
+  - Añadido un poquito de error handling en FileScannerService.
