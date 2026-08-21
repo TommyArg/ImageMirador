@@ -1,5 +1,3 @@
-// entonces aca hay que refactorizar el maincontroller
-
 package org.dsf.imagemirador.Viewer;
 
 import javafx.scene.Group;

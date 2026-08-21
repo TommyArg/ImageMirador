@@ -54,7 +54,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        // le pasamos los elementos al controller imageviewer
         imageViewer = new ImageViewer(imageWindow, scrollPane, imageGroup, checkMirror);
         mediaViewer = new MediaViewer(mediaWindow);
 
