@@ -48,6 +48,15 @@ public class FileScannerService {
         );
     }
 
+    private MediaItem.MediaType determineMediaType(Path path) {
+        String fileName = path.getFileName().toString().toLowerCase();
+        if (fileName.endsWith(".mp4") || fileName.endsWith(".mov")) {
+            return MediaItem.MediaType.VIDEO;
+        }
+        return MediaItem.MediaType.IMAGE;
+    }
+
+
     //escaneo y creacion de DTOs
     private List<MediaItem> scanAndCacheDirectory(Path directoryPath) {
         try (Stream<Path> paths = Files.list(directoryPath)) {
@@ -58,7 +67,7 @@ public class FileScannerService {
                     .map(path -> new MediaItem(
                             path.toUri().toString(),
                             path.getFileName().toString(),
-                            MediaItem.MediaType.IMAGE
+                            determineMediaType(path)
                     ))
                     .collect(Collectors.toList());
         } catch (IOException e) {
