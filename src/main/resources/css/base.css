@@ -1,0 +1,33 @@
+/* Estilos comunes para ambos temas */
+
+.root {
+    -fx-font-family: "Segoe UI", "Arial";
+    -fx-font-size: 12;
+    -fx-text-background-color: derive(-fx-control-inner-background, 0%);
+    -fx-accent-color: #0066cc;
+    -fx-default-button-color: #0066cc;
+    -fx-focus-color: #0078d4;
+    -fx-faint-focus-color: #0078d422;
+}
+
+.menu-bar {
+    -fx-padding: 8px;
+}
+
+.button {
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 4;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-opacity: 0.85;
+}
+
+/* Variables que se sobrescriben por tema */
+.root {
+    -fx-primary-color: #ffffff;
+    -fx-secondary-color: #f5f5f5;
+    -fx-text-color: #000000;
+    -fx-accent-color: #0066cc;
+}

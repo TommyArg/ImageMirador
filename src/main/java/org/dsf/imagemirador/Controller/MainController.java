@@ -1,20 +1,26 @@
 package org.dsf.imagemirador.Controller;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.dsf.imagemirador.Dto.MediaItem;
+import org.dsf.imagemirador.Service.ConfigService;
 import org.dsf.imagemirador.Service.FileScannerService;
+import org.dsf.imagemirador.Service.ThemeManager;
 import org.dsf.imagemirador.Service.ThumbnailService;
 import org.dsf.imagemirador.Viewer.ImageViewer;
 import org.dsf.imagemirador.Viewer.MediaViewer;
@@ -32,7 +38,6 @@ public class MainController {
     @FXML private CheckMenuItem alwaysOnTop;
     @FXML private CheckMenuItem checkGallery;
     @FXML private MediaView mediaWindow;
-
     @FXML private javafx.scene.Node galleryView;
     @FXML private GalleryController galleryViewController;
 
@@ -43,13 +48,28 @@ public class MainController {
     private ImageViewer imageViewer;
     private MediaViewer mediaViewer;
     private Stage stage;
+    private ThemeManager themeManager;
+    private ConfigService configService;
+
+    public ThemeManager getThemeManager() {
+        return themeManager;
+    }
+
+    public void setConfigService(ConfigService configService) {
+        this.configService = configService;
+    }
 
     //el controlador recibe el Stage
     public void setStage(Stage stage) {
         this.stage = stage;
         if (imageViewer != null) {
-            imageViewer.setStage(stage); //sin esto no anda, la cosa es que es un codigo que se repite lo anterior, no?
+            imageViewer.setStage(stage);
         }
+        Platform.runLater(() -> {
+            themeManager = new ThemeManager(stage.getScene());
+            themeManager.setTheme(ThemeManager.Theme.Claro);
+            System.out.println("thememanager andando"); //hay que acordarse de eliminar todos los mensajes de debug mas adelante
+        });
     }
 
     @FXML
@@ -122,8 +142,9 @@ public class MainController {
                 }
 
                 // mostrar galería automáticamente despuéees de elegir el archivo y actualizar el check del menú
+                //AHI PUSE EN FALSE, SE PUEDE HACER QUE SEA UNA OPCION PARA QUE EL USUARIO QUIERA O NO QUE PASE ESO
                 if (!checkGallery.isSelected()) {
-                    checkGallery.setSelected(true);
+                    checkGallery.setSelected(false);
                     toggleGalleryMethod();
                 }
 
@@ -212,5 +233,32 @@ public class MainController {
     @FXML public void scrollZoomMethod(ScrollEvent event) {
         imageViewer.scrollZoom(event.getDeltaY());
         event.consume();
+    }
+
+    @FXML
+    public void openSettingsMethod() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/dsf/imagemirador/setting-view.fxml")
+            );
+            VBox settingsRoot = loader.load();
+
+            SettingController settingsController = loader.getController();
+            settingsController.setThemeManager(themeManager);
+
+            Stage settingsStage = new Stage();
+            settingsStage.setTitle("Configuración");
+            settingsStage.setScene(new Scene(settingsRoot, 300, 200));
+
+            settingsStage.initOwner(stage);
+            settingsController.setSettingsStage(settingsStage);
+            settingsController.setConfigService(configService);
+            settingsController.applyThemeToSettings(themeManager.getCurrentTheme());
+            settingsStage.show();
+
+        } catch (Exception e) {
+            System.err.println("Error abriendo settings: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

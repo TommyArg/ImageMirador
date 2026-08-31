@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.dsf.imagemirador.Controller.SettingController"
+      spacing="15">
+
+    <!-- ← Usar Insets correctamente~ -->
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Configuración" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+    <VBox spacing="10" style="-fx-border-color: #cccccc;">
+        <!-- ← Padding como sub-elemento~ -->
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <Label text="Apariencia" style="-fx-font-weight: bold;"/>
+
+        <HBox spacing="10">
+            <Label text="Tema:" prefWidth="80"/>
+            <ComboBox fx:id="themeCombo" prefWidth="200"/>
+        </HBox>
+
+        <Label fx:id="themeLabel" style="-fx-text-fill: #666666; -fx-font-size: 11;"/>
+    </VBox>
+</VBox>
