@@ -2,9 +2,12 @@ package org.dsf.imagemirador.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.dsf.imagemirador.Dto.AppConfig;
 import org.dsf.imagemirador.Service.ConfigService;
 import org.dsf.imagemirador.Service.ThemeManager;
 
@@ -12,6 +15,9 @@ public class SettingController {
 
     @FXML public ComboBox<ThemeManager.Theme> themeCombo;
     @FXML public Label themeLabel;
+
+    @FXML public CheckBox loopCheckBox;
+    @FXML public TextField secondsField;
 
     private ThemeManager themeManager;
     private Stage settingsStage;
@@ -28,6 +34,7 @@ public class SettingController {
 
     public void setConfigService(ConfigService configService) {
         this.configService = configService;
+        setupPlaybackUI(); // Llamamos a configurar la UI de video en cuanto recibimos el servicio
     }
 
     private void setupUI() {
@@ -42,6 +49,36 @@ public class SettingController {
             applyThemeToSettings(newVal);
         });
     }
+
+    private void setupPlaybackUI() {
+        if (configService == null) return;
+
+        AppConfig config = configService.getConfig();
+
+        // 1. Cargar valores actuales en la interfaz
+        loopCheckBox.setSelected(config.isAutoplayShortVideos());
+        secondsField.setText(String.valueOf(config.getMaxShortVideoSeconds()));
+
+        // 2. Guardar automáticamente cuando se hace clic en el CheckBox
+        loopCheckBox.selectedProperty().addListener((obs, old, newVal) -> {
+            config.setAutoplayShortVideos(newVal);
+            configService.saveConfig();
+        });
+
+        // 3. Guardar automáticamente cuando se cambia el número
+        secondsField.textProperty().addListener((obs, old, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                // Si el usuario escribe letras, las borramos forzando solo números
+                secondsField.setText(newVal.replaceAll("[^\\d]", ""));
+            } else if (!newVal.isEmpty()) {
+                // Si es un número válido, lo guardamos en la config
+                int seconds = Integer.parseInt(newVal);
+                config.setMaxShortVideoSeconds(seconds);
+                configService.saveConfig();
+            }
+        });
+    }
+
 
     public void applyThemeToSettings(ThemeManager.Theme theme) {
         if (settingsStage == null) {
@@ -75,6 +112,9 @@ public class SettingController {
             e.printStackTrace();
         }
     }
+
+
+
 
     private void updateThemeLabel() {
         themeLabel.setText("Tema actual: " + themeManager.getCurrentTheme().getDisplayName());

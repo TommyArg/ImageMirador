@@ -96,13 +96,4 @@ public class FileScannerService {
         String fileName = path.getFileName().toString().toLowerCase();
         return SUPPORTED_EXTENSIONS.stream().anyMatch(fileName::endsWith);
     }
-
-    //determina el tipo de media
-    private MediaItem.MediaType determineMediaType(Path path) {
-        String fileName = path.getFileName().toString().toLowerCase();
-        if (fileName.endsWith(".mp4") || fileName.endsWith(".mov")) {
-            return MediaItem.MediaType.VIDEO;
-        }
-        return MediaItem.MediaType.IMAGE;
-    }
 }

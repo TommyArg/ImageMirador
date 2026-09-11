@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
+
+<!-- Agregamos maxWidth="800" para que la barra no se vuelva gigante en monitores anchos -->
+<HBox fx:id="videoControlsBox" alignment="CENTER" managed="false" spacing="15.0" visible="false"
+      maxWidth="800" maxHeight="-Infinity"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.dsf.imagemirador.Controller.VideoController"
+      style="-fx-background-color: rgba(30, 30, 30, 0.8); -fx-padding: 10; -fx-background-radius: 10;">
+
+    <!-- para que flote-->
+    <StackPane.margin>
+        <Insets bottom="30.0" />
+    </StackPane.margin>
+
+    <children>
+        <Button mnemonicParsing="false" onAction="#playVideoMethod" text="▶" style="-fx-cursor: hand; -fx-background-radius: 15;"/>
+        <Button mnemonicParsing="false" onAction="#pauseVideoMethod" text="⏸" style="-fx-cursor: hand; -fx-background-radius: 15;"/>
+        <Label fx:id="timeLabel" text="00:00 / 00:00" textFill="WHITE" style="-fx-font-weight: bold; -fx-font-family: monospace; -fx-font-size: 14;"/>
+
+        <!-- límite de 800px caja padre -->
+        <Slider fx:id="progressSlider" HBox.hgrow="ALWAYS" style="-fx-cursor: hand;"/>
+
+        <Label text="Vol:" textFill="WHITE" style="-fx-font-weight: bold;"/>
+        <Slider fx:id="volumeSlider" max="1.0" prefWidth="100.0" value="0.5" style="-fx-cursor: hand;"/>
+    </children>
+</HBox>

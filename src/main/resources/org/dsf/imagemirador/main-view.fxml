@@ -12,14 +12,15 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
+<!-- Las importaciones de los controles ya no van aquí porque viven en su propio FXML -->
 
-<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.dsf.imagemirador.Controller.MainController">
+<!-- Cambiamos la versión a 21 para evitar el Warning en consola -->
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.dsf.imagemirador.Controller.MainController">
     <children>
         <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <!-- Bueno si acá le cambié el nombre para que coincida con el metodito del service jejeje -->
                         <MenuItem mnemonicParsing="false" onAction="#openMethod" text="Open">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -35,7 +36,6 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Navigation">
                     <items>
-                        <!-- control de la galería -->
                         <CheckMenuItem fx:id="checkGallery" mnemonicParsing="false" onAction="#toggleGalleryMethod" text="Show Gallery">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -81,6 +81,12 @@
                                 <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </CheckMenuItem>
+                        <!-- Botóon y atajo para pantalla completa -->
+                        <MenuItem mnemonicParsing="false" onAction="#fullScreenMethod" text="Fullscreen">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" code="F11" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
                         <CheckMenuItem fx:id="alwaysOnTop" mnemonicParsing="false" onAction="#alwaysOnTopMethod" text="Pin">
                             <accelerator>
                                 <KeyCodeCombination alt="UP" code="SPACE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -94,11 +100,11 @@
                         </MenuItem>
                     </items>
                 </Menu>
-            <Menu mnemonicParsing="false" text="Settings">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#openSettingsMethod" text="Setting" />
-              </items>
-            </Menu>
+                <Menu mnemonicParsing="false" text="Settings">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openSettingsMethod" text="Setting" />
+                    </items>
+                </Menu>
             </menus>
         </MenuBar>
 
@@ -115,6 +121,9 @@
                     </StackPane>
                 </content>
             </ScrollPane>
+
+            <!-- Aca se inyectan los controles de video -->
+            <fx:include fx:id="videoControls" source="video-controls.fxml" StackPane.alignment="BOTTOM_CENTER" />
 
             <!-- aca se inyecta la subvista de la galería al final del VBox -->
             <fx:include fx:id="galleryView" source="gallery-view.fxml" StackPane.alignment="BOTTOM_CENTER" />

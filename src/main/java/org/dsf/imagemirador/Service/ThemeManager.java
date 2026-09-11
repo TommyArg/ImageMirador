@@ -71,43 +71,6 @@ public class ThemeManager {
         }
     }
 
-    //DEBUG, capaz te sirve para algo, si no, borralo nomas
-    /*
-    public void applyTheme(Theme theme) {
-        if (scene == null) {
-            System.err.println("Scene es NULL, idiota");
-            return;
-        }
-
-        try {
-            ObservableList<String> stylesheets = scene.getStylesheets();
-            stylesheets.clear();
-
-            // ← DEBUG: Base CSS
-            String baseCSS = getClass().getResource(CSS_RESOURCE_PATH + "base.css").toExternalForm();
-            System.out.println("✓ Base CSS encontrado: " + baseCSS);
-            stylesheets.add(baseCSS);
-
-            // ← DEBUG: Theme CSS
-            String themeCSS = getClass().getResource(
-                    CSS_RESOURCE_PATH + theme.getCssName() + ".css"
-            ).toExternalForm();
-            System.out.println("✓ Theme CSS encontrado: " + themeCSS);
-            System.out.println("  Buscando: " + CSS_RESOURCE_PATH + theme.getCssName() + ".css");
-            stylesheets.add(themeCSS);
-
-            System.out.println("✓ Tema aplicado: " + theme.getDisplayName() + " ♡");
-
-        } catch (NullPointerException e) {
-            System.err.println("CSS NO ENCONTRADO: " + e.getMessage());
-            System.err.println("   Buscando en: " + CSS_RESOURCE_PATH);
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Error aplicando tema: " + e.getMessage());
-            e.printStackTrace();
-        }
-    } */
-
     //cambia tema
     public void setTheme(Theme theme) {
         currentTheme.set(theme);

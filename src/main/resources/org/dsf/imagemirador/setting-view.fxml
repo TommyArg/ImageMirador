@@ -3,17 +3,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<!-- Aumentamos el tamaño a 480x300 para que tu nuevo texto largo entre perfecto -->
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.dsf.imagemirador.Controller.SettingController"
-      spacing="15">
+      spacing="15"
+      prefWidth="480" prefHeight="300">
 
     <!-- ← Usar Insets correctamente~ -->
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <Label text="Configuración" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+    <Label text="Settings" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
 
     <VBox spacing="10" style="-fx-border-color: #cccccc;">
         <!-- ← Padding como sub-elemento~ -->
@@ -21,13 +23,28 @@
             <Insets top="15" right="15" bottom="15" left="15"/>
         </padding>
 
-        <Label text="Apariencia" style="-fx-font-weight: bold;"/>
+        <Label text="Appearance" style="-fx-font-weight: bold;"/>
 
         <HBox spacing="10">
-            <Label text="Tema:" prefWidth="80"/>
+            <Label text="Theme:" prefWidth="80"/>
             <ComboBox fx:id="themeCombo" prefWidth="200"/>
         </HBox>
 
         <Label fx:id="themeLabel" style="-fx-text-fill: #666666; -fx-font-size: 11;"/>
+    </VBox>
+
+    <VBox spacing="10" style="-fx-border-color: #cccccc;">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <Label text="Looping" style="-fx-font-weight: bold;"/>
+
+        <CheckBox fx:id="loopCheckBox" text="Short videos will loop automatically"/>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Max duration to be considered a short video (seconds):"/>
+            <TextField fx:id="secondsField" prefWidth="50"/>
+        </HBox>
     </VBox>
 </VBox>

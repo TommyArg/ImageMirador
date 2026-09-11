@@ -11,7 +11,10 @@ module org.kevin.imagemirador {
     requires eu.hansolo.tilesfx;
     requires org.kordamp.ikonli.core;
     requires javafx.media;
-
+    requires java.prefs;
+    requires com.google.gson;
+    //requires y opens para el gson, sino no puede leer propiedades privadas
+    opens org.dsf.imagemirador.Dto to com.google.gson;
     opens org.dsf.imagemirador to javafx.fxml;
     exports org.dsf.imagemirador;
     exports org.dsf.imagemirador.Controller;

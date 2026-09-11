@@ -40,6 +40,7 @@ public class MainController {
     @FXML private MediaView mediaWindow;
     @FXML private javafx.scene.Node galleryView;
     @FXML private GalleryController galleryViewController;
+    @FXML private VideoController videoControlsController;
 
     private final FileScannerService fileScannerService = new FileScannerService();
     private final ThumbnailService thumbnailService = new ThumbnailService();
@@ -75,7 +76,10 @@ public class MainController {
     @FXML
     public void initialize() {
         imageViewer = new ImageViewer(imageWindow, scrollPane, imageGroup, checkMirror);
-        mediaViewer = new MediaViewer(mediaWindow);
+
+        // ¡LE PASAMOS EL SCROLLPANE AL FINAL!
+        mediaViewer = new MediaViewer(mediaWindow, scrollPane);
+        videoControlsController.setMediaViewer(mediaViewer);
 
         //por default, la galeria inicia oculta
         galleryView.setVisible(false);
@@ -88,9 +92,9 @@ public class MainController {
         Window window = imageWindow.getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Elegí un archivo");
+        fileChooser.setTitle("Select file:");
         fileChooser.getExtensionFilters().add(fileScannerService.getSupportedExtensionsFilter());
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Todos los archivos", "*.*"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All files", "*.*"));
 
         File lastDir = fileScannerService.getLastDirectory();
         if (lastDir != null && lastDir.exists()) {
@@ -177,8 +181,28 @@ public class MainController {
         if (currentItem.type() == MediaItem.MediaType.VIDEO) {
             // si es formato mp4 o mov viene mediaviewer
             System.out.println("Encontré tu videooo, agarra croquetas que empieza");
-            mediaViewer.loadMedia(currentItem);
+
+            // apaga la imagen, encendemos el video
+            imageGroup.setVisible(false);
+            mediaWindow.setVisible(true);
+            mediaWindow.setManaged(true);
+            videoControlsController.setVisible(true);
+
+            // leer configuración JSON y se la pasamos al visor para el Autoplay
+            if (configService != null) {
+                configService.loadConfig();
+                mediaViewer.loadMedia(currentItem, configService.getConfig());
+            } else {
+                mediaViewer.loadMedia(currentItem, new org.dsf.imagemirador.Dto.AppConfig()); // Fallback por si acaso
+            }
+
         } else {
+            // Apagamos el video, encendemos la imagen
+            mediaWindow.setVisible(false);
+            mediaWindow.setManaged(false);
+            imageGroup.setVisible(true);
+            videoControlsController.setVisible(false);
+
             // si no es video, se lo mandamos al ImageViewer
             imageViewer.showImage(currentItem);
         }
@@ -247,8 +271,9 @@ public class MainController {
             settingsController.setThemeManager(themeManager);
 
             Stage settingsStage = new Stage();
-            settingsStage.setTitle("Configuración");
-            settingsStage.setScene(new Scene(settingsRoot, 300, 200));
+            settingsStage.setTitle("Settings");
+            // cambié el tamaño para que se vea bien a la primera, sin que haga falta redimensionar maanualmnte
+            settingsStage.setScene(new Scene(settingsRoot, 430, 340));
 
             settingsStage.initOwner(stage);
             settingsController.setSettingsStage(settingsStage);
@@ -259,6 +284,15 @@ public class MainController {
         } catch (Exception e) {
             System.err.println("Error abriendo settings: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void fullScreenMethod() {
+        if (stage != null) {
+            // si fullscreen esta activa, se desactiva. Si está desactivada, la activa
+            stage.setFullScreen(!stage.isFullScreen());
+            System.out.println("Pantalla completitaaa: " + stage.isFullScreen() + " uwu");
         }
     }
 }
